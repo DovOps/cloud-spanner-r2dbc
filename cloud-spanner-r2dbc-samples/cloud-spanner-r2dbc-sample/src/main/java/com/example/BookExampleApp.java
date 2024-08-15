@@ -69,11 +69,13 @@ public class BookExampleApp {
    * Creates a table named BOOKS.
    */
   public void createTable() {
-    Mono.from(this.connection.createStatement("CREATE TABLE BOOKS ("
-            + "  ID STRING(20) NOT NULL,"
-            + "  TITLE STRING(MAX) NOT NULL,"
-            + "  EXTRADETAILS JSON"
-            + ") PRIMARY KEY (ID)").execute())
+    Mono.from(this.connection.createStatement("""
+            CREATE TABLE BOOKS (\
+              ID STRING(20) NOT NULL,\
+              TITLE STRING(MAX) NOT NULL,\
+              EXTRADETAILS JSON\
+            ) PRIMARY KEY (ID)\
+            """).execute())
         .doOnSuccess(x -> System.out.println("Table creation completed."))
         .block();
   }
@@ -83,10 +85,12 @@ public class BookExampleApp {
    */
   public void saveBooks() {
     Statement statement = this.connection.createStatement(
-        "INSERT BOOKS "
-            + "(ID, TITLE)"
-            + " VALUES "
-            + "(@id, @title)")
+        """
+        INSERT BOOKS \
+        (ID, TITLE)\
+         VALUES \
+        (@id, @title)\
+        """)
         .bind("id", "book1")
         .bind("title", "Book One")
         .add()
@@ -95,10 +99,12 @@ public class BookExampleApp {
 
 
     Statement statement2 = this.connection.createStatement(
-            "INSERT BOOKS "
-                    + "(ID, TITLE, EXTRADETAILS)"
-                    + " VALUES "
-                    + "(@id, @title, @extradetails)")
+            """
+            INSERT BOOKS \
+            (ID, TITLE, EXTRADETAILS)\
+             VALUES \
+            (@id, @title, @extradetails)\
+            """)
             .bind("id", "book3")
             .bind("title", "Book Three")
             .bind("extradetails", new JsonWrapper("{\"rating\":9,\"series\":true}"));

@@ -32,12 +32,20 @@
   <name>Google Cloud Spanner R2DBC Driver</name>
   <description>Reactive R2DBC driver implementation for Cloud Spanner.</description>
   <url>https://github.com/GoogleCloudPlatform/cloud-spanner-r2dbc/tree/main/cloud-spanner-r2dbc</url>
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
 
   <dependencies>
 
     <dependency>
       <groupId>io.r2dbc</groupId>
       <artifactId>r2dbc-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <version>1.3.5</version>
     </dependency>
 
     <dependency>

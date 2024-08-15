@@ -32,6 +32,7 @@
   <packaging>pom</packaging>
 
   <properties>
+    <maven.compiler.release>17</maven.compiler.release>
     <sonar.skip>true</sonar.skip>
   </properties>
 

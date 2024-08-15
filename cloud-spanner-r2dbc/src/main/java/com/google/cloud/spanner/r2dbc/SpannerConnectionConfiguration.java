@@ -95,8 +95,8 @@ public class SpannerConnectionConfiguration {
     this.instanceName = instanceName;
     this.databaseName = databaseName;
 
-    this.fullyQualifiedDbName = String.format(
-        FQDN_PATTERN_GENERATE, projectId, instanceName, databaseName);
+    this.fullyQualifiedDbName = 
+        FQDN_PATTERN_GENERATE.formatted(projectId, instanceName, databaseName);
     this.credentials = credentials;
   }
 
@@ -268,8 +268,8 @@ public class SpannerConnectionConfiguration {
     private void validateFullyQualifiedDatabaseName(String databaseString) {
       if (!FQDN_PATTERN_PARSE.matcher(databaseString).matches()) {
         throw new IllegalArgumentException(
-            String.format(
-                "Malformed Cloud Spanner Database String: %s. The url must have the format: %s",
+            
+                "Malformed Cloud Spanner Database String: %s. The url must have the format: %s".formatted(
                 databaseString,
                 FQDN_PATTERN_GENERATE));
       }

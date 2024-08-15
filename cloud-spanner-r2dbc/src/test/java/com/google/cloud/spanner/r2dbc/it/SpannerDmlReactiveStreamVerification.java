@@ -77,7 +77,7 @@ class SpannerDmlReactiveStreamVerification extends
     return Mono.from(connectionFactory.create())
         .flatMapMany(conn ->
             Flux.from(conn.createStatement(
-                    String.format("UPDATE %s SET TITLE=\"book one updated\" WHERE CATEGORY=42 ",
+                    "UPDATE %s SET TITLE=\"book one updated\" WHERE CATEGORY=42 ".formatted(
                         BOOKS_TABLE)).execute())
                 .flatMap(rs -> rs.getRowsUpdated())
                 .delayUntil(r -> conn.close())
@@ -88,7 +88,7 @@ class SpannerDmlReactiveStreamVerification extends
   public Publisher<Long> createFailedPublisher() {
     return Mono.from(connectionFactory.create())
         .flatMapMany(conn -> conn.createStatement(
-            String.format("UPDATE %s SET bad syntax ", BOOKS_TABLE)).execute())
+            "UPDATE %s SET bad syntax ".formatted(BOOKS_TABLE)).execute())
         .flatMap(rs -> rs.getRowsUpdated());
   }
 

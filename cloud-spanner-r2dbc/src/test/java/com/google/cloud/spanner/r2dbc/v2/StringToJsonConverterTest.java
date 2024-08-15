@@ -47,7 +47,9 @@ class StringToJsonConverterTest {
     assertThatThrownBy(() -> converter.convert(1234L))
             .isInstanceOf(ConversionFailureException.class)
             .hasMessage(
-                    "Unable to convert class java.lang.Class "
-                            + "to class com.google.cloud.spanner.r2dbc.v2.JsonWrapper");
+                    """
+                    Unable to convert class java.lang.Class \
+                    to class com.google.cloud.spanner.r2dbc.v2.JsonWrapper\
+                    """);
   }
 }

@@ -106,8 +106,10 @@ class SpannerConnectionFactoryProviderTest {
   @Test
   void testCreateFactoryWithOldDriverNameWillReturnCorrectFactory() {
     ConnectionFactory spannerConnectionFactory =
-        ConnectionFactories.get("r2dbc:spanner://spanner.googleapis.com:443/projects/"
-            + "myproject/instances/myinstance/databases/mydatabase?usePlainText=true");
+        ConnectionFactories.get("""
+            r2dbc:spanner://spanner.googleapis.com:443/projects/\
+            myproject/instances/myinstance/databases/mydatabase?usePlainText=true\
+            """);
     assertThat(spannerConnectionFactory)
         .isNotNull()
         .isInstanceOf(SpannerClientLibraryConnectionFactory.class);
@@ -116,8 +118,10 @@ class SpannerConnectionFactoryProviderTest {
   @Test
   void testCreateFactoryWithDriverNameWillReturnCorrectFactory() {
     ConnectionFactory spannerConnectionFactory =
-        ConnectionFactories.get("r2dbc:cloudspanner://spanner.googleapis.com:443/projects/"
-            + "myproject/instances/myinstance/databases/mydatabase?usePlainText=true");
+        ConnectionFactories.get("""
+            r2dbc:cloudspanner://spanner.googleapis.com:443/projects/\
+            myproject/instances/myinstance/databases/mydatabase?usePlainText=true\
+            """);
     assertThat(spannerConnectionFactory)
         .isNotNull()
         .isInstanceOf(SpannerClientLibraryConnectionFactory.class);
@@ -128,8 +132,10 @@ class SpannerConnectionFactoryProviderTest {
     ConnectionFactoryOptions optionsWithUrl =
         ConnectionFactoryOptions.builder()
             .option(DRIVER, DRIVER_NAME)
-            .option(URL, "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/"
-                + "myproject/instances/myinstance/databases/mydatabase")
+            .option(URL, """
+                r2dbc:cloudspanner://spanner.googleapis.com:443/projects/\
+                myproject/instances/myinstance/databases/mydatabase\
+                """)
             .option(GOOGLE_CREDENTIALS, this.mockCredentials)
             .build();
 

@@ -68,7 +68,9 @@ class BookExampleAppIntegrationTest {
     assertThat(baos.toString()).contains("Retrieved book: book2; Title: Book Two");
     assertThat(baos.toString())
         .contains(
-            "Retrieved book: book3; Title: Book Three; "
-                + "Extra Details: {\"rating\":9,\"series\":true}");
+            """
+            Retrieved book: book3; Title: Book Three; \
+            Extra Details: {"rating":9,"series":true}\
+            """);
   }
 }

@@ -27,7 +27,7 @@ interface DatabaseProperties {
 
   String DATABASE = System.getProperty("spanner.database", "testdb");
 
-  String URL = String.format(
-      "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/%s/instances/%s/databases/%s",
+  String URL = 
+      "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/%s/instances/%s/databases/%s".formatted(
       ServiceOptions.getDefaultProjectId(), INSTANCE, DATABASE);
 }

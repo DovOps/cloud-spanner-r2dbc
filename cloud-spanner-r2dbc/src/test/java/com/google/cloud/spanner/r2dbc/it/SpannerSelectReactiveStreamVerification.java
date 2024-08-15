@@ -76,7 +76,7 @@ class SpannerSelectReactiveStreamVerification extends
         .flatMapMany(conn ->
             Flux.from(
                   conn.createStatement(
-                      String.format("SELECT * FROM %s ORDER BY TITLE LIMIT %d",
+                      "SELECT * FROM %s ORDER BY TITLE LIMIT %d".formatted(
                           BOOKS_TABLE, l)).execute())
                 .flatMap(rs -> rs.map((r, rm) -> r), 1, /* turn off prefetch */ 1)
         // not closing connection to avoid changing demand (delayUntil uses buffer of 32)

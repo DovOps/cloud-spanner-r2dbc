@@ -39,8 +39,10 @@ public class SpannerTransactionDefinition implements TransactionDefinition {
   private void validate(Map<Option<?>, Object> internalMap) {
     boolean isReadOnlyTransaction = TRUE.equals(internalMap.get(READ_ONLY));
     if (!isReadOnlyTransaction && internalMap.containsKey(TIMESTAMP_BOUND)) {
-      throw new IllegalArgumentException("TIMESTAMP_BOUND can only be configured for"
-          + " read only transactions.");
+      throw new IllegalArgumentException("""
+          TIMESTAMP_BOUND can only be configured for\
+           read only transactions.\
+          """);
     }
   }
 

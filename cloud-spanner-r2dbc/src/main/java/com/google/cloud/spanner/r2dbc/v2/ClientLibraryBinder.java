@@ -112,8 +112,7 @@ class ClientLibraryBinder {
 
     final SpannerType spannerType;
 
-    if (value instanceof Parameter) {
-      Parameter param = (Parameter) value;
+    if (value instanceof Parameter param) {
       finalValue = param.getValue();
       Type type = param.getType();
       spannerType = type instanceof SpannerType ? (SpannerType) param.getType() : null;
@@ -131,7 +130,7 @@ class ClientLibraryBinder {
     Optional<ClientLibraryTypeBinder> optionalBinder = binders.stream()
         .filter(e -> e.canBind(valueClass, spannerType))
         .findFirst();
-    if (!optionalBinder.isPresent()) {
+    if (optionalBinder.isEmpty()) {
       throw new BindingFailureException("Can't find a binder for type: " + valueClass);
     }
 

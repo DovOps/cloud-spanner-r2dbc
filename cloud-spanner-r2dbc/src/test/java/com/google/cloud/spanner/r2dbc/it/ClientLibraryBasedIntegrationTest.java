@@ -119,13 +119,13 @@ class ClientLibraryBasedIntegrationTest {
 
     StepVerifier.create(
         Mono.from(conn.createStatement(
-                String.format("SELECT count(*) as count FROM %s", BOOKS_TABLE)).execute())
+                "SELECT count(*) as count FROM %s".formatted(BOOKS_TABLE)).execute())
             .flatMapMany(rs -> rs.map((row, rmeta) -> row.get(0, Long.class))))
         .expectNext(Long.valueOf(0))
         .verifyComplete();
     StepVerifier.create(
         Mono.from(conn.createStatement(
-                String.format("SELECT count(*) as count FROM %s", BOOKS_TABLE)).execute())
+                "SELECT count(*) as count FROM %s".formatted(BOOKS_TABLE)).execute())
             .flatMapMany(rs -> rs.map((row, rmeta) -> row.get("count", Long.class))))
         .expectNext(Long.valueOf(0))
         .verifyComplete();
@@ -152,7 +152,7 @@ class ClientLibraryBasedIntegrationTest {
 
     StepVerifier.create(
         Mono.from(conn.createStatement(
-                String.format("SELECT AUTHOR, PRICE FROM %s LIMIT 1", BOOKS_TABLE)).execute())
+                "SELECT AUTHOR, PRICE FROM %s LIMIT 1".formatted(BOOKS_TABLE)).execute())
             .flatMapMany(rs -> rs.map((row, rmeta) -> rmeta.getColumnMetadatas()))
         ).assertNext(metadataList -> {
           assertEquals(2, metadataList.size());
@@ -204,13 +204,13 @@ class ClientLibraryBasedIntegrationTest {
 
     StepVerifier.create(
             Mono.from(conn.createStatement(
-                    String.format("SELECT count(*) FROM %s", BOOKS_TABLE)).execute())
+                    "SELECT count(*) FROM %s".formatted(BOOKS_TABLE)).execute())
                 .flatMapMany(rs -> rs.map((row, rmeta) -> row.get(0, Long.class))))
         .expectNext(Long.valueOf(1))
         .verifyComplete();
     StepVerifier.create(
         Mono.from(
-            conn.createStatement(String.format("SELECT * FROM %s WHERE UUID = @uuid", BOOKS_TABLE))
+            conn.createStatement("SELECT * FROM %s WHERE UUID = @uuid".formatted(BOOKS_TABLE))
                 .bind("uuid", id)
                 .execute()
         ).flatMapMany(
@@ -255,7 +255,7 @@ class ClientLibraryBasedIntegrationTest {
         .verifyComplete();
 
     StepVerifier.create(
-            Mono.from(conn.createStatement(String.format("SELECT * FROM %s", BOOKS_TABLE))
+            Mono.from(conn.createStatement("SELECT * FROM %s".formatted(BOOKS_TABLE))
                     .execute())
                 .flatMapMany(rs -> rs.map((row, meta) -> row.get("EXTRA", JsonWrapper.class))))
         // Members of a JSON object are sorted lexicographically.
@@ -308,7 +308,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT COUNT(*) as num_rows FROM %s WHERE UUID = @uuid",
+                    "SELECT COUNT(*) as num_rows FROM %s WHERE UUID = @uuid".formatted(
                         BOOKS_TABLE))
                 .bind("uuid", uuid1)
                 .execute()
@@ -337,8 +337,8 @@ class ClientLibraryBasedIntegrationTest {
                 ).flatMap(r -> r.getRowsUpdated()),
 
                 Flux.from(c.createStatement(
-                            String.format("UPDATE %s SET CATEGORY=200 WHERE CATEGORY = 100",
-                                BOOKS_TABLE)).execute())
+                        "UPDATE %s SET CATEGORY=200 WHERE CATEGORY = 100".formatted(
+                            BOOKS_TABLE)).execute())
                     .flatMap(r -> r.getRowsUpdated()),
                 c.commitTransaction()
 
@@ -349,7 +349,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT UUID FROM %s WHERE CATEGORY = @category ORDER BY UUID",
+                    "SELECT UUID FROM %s WHERE CATEGORY = @category ORDER BY UUID".formatted(
                         BOOKS_TABLE))
                 .bind("category", 200L)
                 .execute()
@@ -401,7 +401,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT count(*) as count FROM %s WHERE UUID=@uuid", BOOKS_TABLE))
+                    "SELECT count(*) as count FROM %s WHERE UUID=@uuid".formatted(BOOKS_TABLE))
                 .bind("uuid", uuid)
                 .execute()
             ).flatMap(rs -> rs.map((row, rmeta) -> row.get("count", Long.class))))
@@ -423,7 +423,7 @@ class ClientLibraryBasedIntegrationTest {
                     .execute()
                 ).flatMap(r -> r.getRowsUpdated()),
                 Flux.from(c.createStatement(
-                        String.format("SELECT UUID FROM %s WHERE UUID = @uuid", BOOKS_TABLE))
+                      "SELECT UUID FROM %s WHERE UUID = @uuid".formatted(BOOKS_TABLE))
                   .bind("uuid", uuid1).execute()
                 ).flatMap(r -> r.map((row, rmeta) -> row.get("UUID", String.class))),
                 c.commitTransaction()
@@ -447,7 +447,7 @@ class ClientLibraryBasedIntegrationTest {
                     .execute()
                 ).flatMap(r -> r.getRowsUpdated()),
                 Flux.from(c.createStatement(
-                        String.format("SELECT UUID FROM %s WHERE UUID = @uuid", BOOKS_TABLE))
+                        "SELECT UUID FROM %s WHERE UUID = @uuid".formatted(BOOKS_TABLE))
                     .bind("uuid", uuid1).execute()
                 ).flatMap(r -> r.map((row, rmeta) -> row.get("UUID", String.class))),
                 c.rollbackTransaction()
@@ -487,7 +487,7 @@ class ClientLibraryBasedIntegrationTest {
         Mono.from(connectionFactory.create()).flatMapMany(
             conn -> Flux.from(
                 conn.createStatement(
-                        String.format("SELECT count(*) FROM %s WHERE WORDS_PER_SENTENCE > @words",
+                        "SELECT count(*) FROM %s WHERE WORDS_PER_SENTENCE > @words".formatted(
                             BOOKS_TABLE))
                     .bind("words", 8).add()
                     .bind("words", 7).add()
@@ -535,7 +535,7 @@ class ClientLibraryBasedIntegrationTest {
                 conn.beginTransaction(),
                 Flux.from(
                   conn.createStatement(
-                          String.format("SELECT count(*) FROM %s WHERE WORDS_PER_SENTENCE > @words",
+                          "SELECT count(*) FROM %s WHERE WORDS_PER_SENTENCE > @words".formatted(
                               BOOKS_TABLE))
                       .bind("words", 8).add()
                       .bind("words", 7).add()
@@ -559,7 +559,7 @@ class ClientLibraryBasedIntegrationTest {
     String uuid3 = "params-no-transaction-" + this.random.nextInt();
 
     String statement =
-        String.format("INSERT %s (UUID, TITLE) VALUES (@uuid, @title)", BOOKS_TABLE);
+        "INSERT %s (UUID, TITLE) VALUES (@uuid, @title)".formatted(BOOKS_TABLE);
     StepVerifier.create(
         Mono.from(connectionFactory.create()).flatMapMany(
             conn -> Flux.from(
@@ -575,7 +575,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT UUID, TITLE FROM %s ORDER BY TITLE", BOOKS_TABLE))
+                    "SELECT UUID, TITLE FROM %s ORDER BY TITLE".formatted(BOOKS_TABLE))
                 .execute()
             ).flatMap(rs -> rs.map(
                 (row, rmeta) -> row.get("TITLE", String.class) + row.get("UUID", String.class))))
@@ -592,7 +592,7 @@ class ClientLibraryBasedIntegrationTest {
     String uuid3 = "params-no-transaction-" + this.random.nextInt();
 
     String statement =
-        String.format("INSERT %s (UUID, TITLE) VALUES (@uuid, @title)", BOOKS_TABLE);
+        "INSERT %s (UUID, TITLE) VALUES (@uuid, @title)".formatted(BOOKS_TABLE);
     StepVerifier.create(
         Mono.from(connectionFactory.create()).flatMapMany(
             conn -> Flux.concat(
@@ -610,7 +610,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT UUID, TITLE FROM %s ORDER BY TITLE", BOOKS_TABLE))
+                    "SELECT UUID, TITLE FROM %s ORDER BY TITLE".formatted(BOOKS_TABLE))
                 .execute()
             ).flatMap(rs -> rs.map(
                 (row, rmeta) -> row.get("TITLE", String.class) + row.get("UUID", String.class))))
@@ -630,7 +630,7 @@ class ClientLibraryBasedIntegrationTest {
     Connection conn = Mono.from(connectionFactory.create()).block();
 
     Statement readStatement = conn.createStatement(
-            String.format("SELECT count(*) from %s WHERE UUID=@uuid", BOOKS_TABLE))
+            "SELECT count(*) from %s WHERE UUID=@uuid".formatted(BOOKS_TABLE))
         .bind("uuid", uuid1);
 
     StepVerifier.create(Flux.concat(
@@ -658,7 +658,7 @@ class ClientLibraryBasedIntegrationTest {
   void testStrongReadFromSubclassedConnection() throws InterruptedException {
 
     String uuid1 = "transaction1-strong-read" + this.random.nextInt();
-    String sql = String.format("SELECT count(*) from %s WHERE UUID='%s'", BOOKS_TABLE, uuid1);
+    String sql = "SELECT count(*) from %s WHERE UUID='%s'".formatted(BOOKS_TABLE, uuid1);
 
     StepVerifier.create(
         Mono.from(connectionFactory.create()).flatMapMany(conn ->
@@ -705,7 +705,7 @@ class ClientLibraryBasedIntegrationTest {
 
     StepVerifier.create(
             Mono.from(conn.createStatement(
-                    String.format("SELECT title FROM %s", BOOKS_TABLE)).execute())
+                    "SELECT title FROM %s".formatted(BOOKS_TABLE)).execute())
                 .flatMapMany(rs -> rs.map((row, rmeta) -> row.get(0, String.class))),
         /* initial demand of 2 */ 2)
         .expectNextCount(2)
@@ -726,7 +726,7 @@ class ClientLibraryBasedIntegrationTest {
     Connection conn = Mono.from(connectionFactory.create()).block();
 
     StepVerifier.create(
-        Mono.from(conn.createStatement(String.format("SELECT title FROM %s", BOOKS_TABLE))
+        Mono.from(conn.createStatement("SELECT title FROM %s".formatted(BOOKS_TABLE))
                 .execute())
             .flatMapMany(rs -> rs.map((row, rmeta) -> row.get(0, String.class))),
         /* initiali demand of2 */ 2)
@@ -743,8 +743,8 @@ class ClientLibraryBasedIntegrationTest {
 
   @Test
   void urlConnectionWithExplicitAutocommitOff() {
-    String baseUrl = String.format(
-        "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/%s/instances/%s/databases/%s",
+    String baseUrl = 
+        "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/%s/instances/%s/databases/%s".formatted(
         ServiceOptions.getDefaultProjectId(),
         DatabaseProperties.INSTANCE,
         DatabaseProperties.DATABASE);
@@ -759,8 +759,8 @@ class ClientLibraryBasedIntegrationTest {
 
   @Test
   void urlConnectionWithExplicitReadonlyOn() {
-    String baseUrl = String.format(
-        "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/%s/instances/%s/databases/%s",
+    String baseUrl = 
+        "r2dbc:cloudspanner://spanner.googleapis.com:443/projects/%s/instances/%s/databases/%s".formatted(
         ServiceOptions.getDefaultProjectId(),
         DatabaseProperties.INSTANCE,
         DatabaseProperties.DATABASE);
@@ -784,7 +784,7 @@ class ClientLibraryBasedIntegrationTest {
           .flatMapMany(conn -> conn.createBatch()
               .add(makeInsertQuery(uuid1, 29, 10.2))
               .add(makeInsertQuery(uuid2, 29, 10.5))
-              .add(String.format("UPDATE %s SET CATEGORY=17 WHERE CATEGORY=29", BOOKS_TABLE))
+              .add("UPDATE %s SET CATEGORY=17 WHERE CATEGORY=29".formatted(BOOKS_TABLE))
               .execute()
           ).flatMap(r -> r.getRowsUpdated())
     ).expectNext(1L, 1L, 2L)
@@ -795,7 +795,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT CATEGORY FROM %s", BOOKS_TABLE))
+                    "SELECT CATEGORY FROM %s".formatted(BOOKS_TABLE))
                 .execute()
             ).flatMap(rs -> rs.map((row, rmeta) -> row.get("CATEGORY", Integer.class))))
         .expectNext(17, 17)
@@ -821,7 +821,7 @@ class ClientLibraryBasedIntegrationTest {
     StepVerifier.create(
         Mono.from(connectionFactory.create())
             .flatMapMany(c -> c.createStatement(
-                    String.format("SELECT UUID FROM %s ORDER BY UUID", BOOKS_TABLE))
+                    "SELECT UUID FROM %s ORDER BY UUID".formatted(BOOKS_TABLE))
                 .execute()
             ).flatMap(rs -> rs.map((row, rmeta) -> row.get("UUID", String.class))))
         .expectNext(uuids)

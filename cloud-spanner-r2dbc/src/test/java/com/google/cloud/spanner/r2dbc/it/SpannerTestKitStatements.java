@@ -52,6 +52,6 @@ class SpannerTestKitStatements {
       sql = statement.getSql();
     }
 
-    return String.format(sql, args);
+    return sql.formatted(args);
   }
 }

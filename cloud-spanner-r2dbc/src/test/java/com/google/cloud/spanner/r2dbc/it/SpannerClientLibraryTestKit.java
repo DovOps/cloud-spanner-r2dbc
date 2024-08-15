@@ -345,7 +345,7 @@ public class SpannerClientLibraryTestKit implements TestKit<String> {
 
             // NOTE: this defer is a from() in the original. needs a follow up to resolve
             .concatWith(Flux.from(connection.createStatement(
-                String.format(expand(TestStatement.INSERT_VALUE_PLACEHOLDER, getPlaceholder(0))))
+                    expand(TestStatement.INSERT_VALUE_PLACEHOLDER, getPlaceholder(0)).formatted())
                 .bind(getIdentifier(0), 200)
                 .execute())
                 .flatMap(this::extractRowsUpdated))

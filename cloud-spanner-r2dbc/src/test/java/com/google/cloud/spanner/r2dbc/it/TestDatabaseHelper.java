@@ -44,8 +44,8 @@ class TestDatabaseHelper {
   public static final String BOOKS_TABLE = "BOOKS" + SUFFIX;
   private static final Logger LOGGER = LoggerFactory.getLogger(TestDatabaseHelper.class);
 
-  private static final String INSERT_DATA_QUERY = String.format(
-      "INSERT %s (UUID, TITLE, CATEGORY)  VALUES (@uuid, @title, @category)", BOOKS_TABLE);
+  private static final String INSERT_DATA_QUERY = 
+      "INSERT %s (UUID, TITLE, CATEGORY)  VALUES (@uuid, @title, @category)".formatted(BOOKS_TABLE);
 
   private final Connection connection;
 
@@ -57,13 +57,13 @@ class TestDatabaseHelper {
   }
 
   public void dropTable() {
-    LOGGER.info(String.format("Dropping table %s.", BOOKS_TABLE));
+    LOGGER.info("Dropping table %s.".formatted(BOOKS_TABLE));
 
     try {
-      Mono.from(this.connection.createStatement(String.format("DROP TABLE %s", BOOKS_TABLE))
+      Mono.from(this.connection.createStatement("DROP TABLE %s".formatted(BOOKS_TABLE))
           .execute()).block();
     } catch (Exception e) {
-      LOGGER.info(String.format("The %s table doesn't exist", BOOKS_TABLE), e);
+      LOGGER.info("The %s table doesn't exist".formatted(BOOKS_TABLE), e);
     }
   }
 
@@ -95,7 +95,7 @@ class TestDatabaseHelper {
   }
 
   private void createTable() {
-    LOGGER.info(String.format("Creating table %s.", BOOKS_TABLE));
+    LOGGER.info("Creating table %s.".formatted(BOOKS_TABLE));
     Mono.from(
         this.connection.createStatement(
                 "CREATE TABLE " + BOOKS_TABLE + " ("
@@ -148,7 +148,7 @@ class TestDatabaseHelper {
   public void clearTestData() {
 
     Mono.from(
-        this.connection.createStatement(String.format("DELETE FROM %s WHERE true", BOOKS_TABLE))
+        this.connection.createStatement("DELETE FROM %s WHERE true".formatted(BOOKS_TABLE))
             .execute())
         .flatMap(rs -> Mono.from(rs.getRowsUpdated()))
         .block();

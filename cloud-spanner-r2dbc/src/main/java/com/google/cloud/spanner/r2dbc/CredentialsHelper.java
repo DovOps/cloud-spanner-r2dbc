@@ -36,7 +36,7 @@ class CredentialsHelper {
     try {
       return GoogleCredentials.getApplicationDefault();
     } catch (IOException e) {
-      throw new IllegalArgumentException(String.format("Error loading default credentials", e));
+      throw new IllegalArgumentException("Error loading default credentials".formatted(e));
     }
   }
 
@@ -45,13 +45,13 @@ class CredentialsHelper {
     File credentialsFile = new File(filePath);
     if (!credentialsFile.isFile()) {
       throw new IllegalArgumentException(
-          String.format("Error reading credential file %s: File does not exist", filePath));
+          "Error reading credential file %s: File does not exist".formatted(filePath));
     }
     try (InputStream credentialsStream = new FileInputStream(credentialsFile)) {
       return GoogleCredentials.fromStream(credentialsStream);
     } catch (IOException e) {
       throw new IllegalArgumentException(
-          String.format("Error reading credential file %s", filePath), e);
+          "Error reading credential file %s".formatted(filePath), e);
     }
   }
 

@@ -29,12 +29,12 @@ class LongIntegerConverter implements SpannerClientLibrariesConverter<Integer> {
   public Integer convert(Object input) {
     if (!canConvert(input.getClass(), Integer.class)) {
       throw new ConversionFailureException(
-          String.format("Unable to convert %s to %s", ((Object) input.getClass()).getClass(),
+          "Unable to convert %s to %s".formatted(((Object) input.getClass()).getClass(),
               Integer.class));
     }
     long val = (Long) input;
     if (val > Integer.MAX_VALUE || val < Integer.MIN_VALUE) {
-      throw new ConversionFailureException(String.format("%d is out of range for Integer", val));
+      throw new ConversionFailureException("%d is out of range for Integer".formatted(val));
     }
     return (int) val;
   }

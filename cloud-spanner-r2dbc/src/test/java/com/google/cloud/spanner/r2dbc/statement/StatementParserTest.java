@@ -36,9 +36,11 @@ class StatementParserTest {
     sql = "DELETE FROM target_name WHERE true";
     assertThat(StatementParser.getStatementType(sql)).isEqualTo(StatementType.DML);
 
-    sql = "UPDATE Singers\n"
-        + "SET BirthDate = '1990-10-10'\n"
-        + "WHERE FirstName = 'Marc' AND LastName = 'Richards'";
+    sql = """
+        UPDATE Singers
+        SET BirthDate = '1990-10-10'
+        WHERE FirstName = 'Marc' AND LastName = 'Richards'\
+        """;
     assertThat(StatementParser.getStatementType(sql)).isEqualTo(StatementType.DML);
   }
 

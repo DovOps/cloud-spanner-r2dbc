@@ -158,10 +158,10 @@ public class SpannerConnectionFactoryProvider implements ConnectionFactoryProvid
 
   private boolean getBooleanFlag(Object value) {
     Assert.requireNonNull(value, "Non-null option value expected");
-    if (value instanceof Boolean) {
-      return ((Boolean) value).booleanValue();
-    } else if (value instanceof String) {
-      return Boolean.valueOf((String) value);
+    if (value instanceof Boolean boolean1) {
+      return boolean1.booleanValue();
+    } else if (value instanceof String string) {
+      return Boolean.valueOf(string);
     }
     throw new IllegalStateException("Flag type expected to be Boolean or String for " + value);
   }

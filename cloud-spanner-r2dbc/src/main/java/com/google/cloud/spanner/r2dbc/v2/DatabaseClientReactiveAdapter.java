@@ -232,8 +232,10 @@ class DatabaseClientReactiveAdapter {
 
   private int longToInt(Long numRows) {
     if (numRows > Integer.MAX_VALUE) {
-      LOGGER.warn("Number of updated rows exceeds maximum integer value; actual rows updated = {}; "
-          + "returning max int value", numRows);
+      LOGGER.warn("""
+          Number of updated rows exceeds maximum integer value; actual rows updated = {}; \
+          returning max int value\
+          """, numRows);
       return Integer.MAX_VALUE;
     }
     return numRows.intValue();

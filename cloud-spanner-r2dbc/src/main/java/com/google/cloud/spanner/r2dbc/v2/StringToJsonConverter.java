@@ -29,8 +29,8 @@ class StringToJsonConverter implements SpannerClientLibrariesConverter<JsonWrapp
   public JsonWrapper convert(Object input) {
     if (!canConvert(input.getClass(), JsonWrapper.class)) {
       throw new ConversionFailureException(
-          String.format("Unable to convert %s to %s", ((Object) input.getClass()).getClass(),
-                  JsonWrapper.class));
+          "Unable to convert %s to %s".formatted(((Object) input.getClass()).getClass(),
+              JsonWrapper.class));
     }
     return new JsonWrapper((String) input);
   }

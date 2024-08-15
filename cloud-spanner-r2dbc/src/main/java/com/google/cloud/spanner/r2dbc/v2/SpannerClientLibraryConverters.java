@@ -36,9 +36,9 @@ class SpannerClientLibraryConverters {
     Optional<SpannerClientLibrariesConverter<?>> converter = converters.stream()
         .filter(candidate -> candidate.canConvert(value.getClass(), type))
         .findFirst();
-    if (!converter.isPresent()) {
+    if (converter.isEmpty()) {
       throw new ConversionFailureException(
-          String.format("Unable to convert %s to %s", value.getClass(), type));
+          "Unable to convert %s to %s".formatted(value.getClass(), type));
     }
     return (T) converter.get().convert(value);
   }
